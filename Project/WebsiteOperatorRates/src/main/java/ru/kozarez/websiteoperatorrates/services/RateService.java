@@ -48,7 +48,46 @@ public class RateService {
                 minutes = Integer.parseInt(minutesStr);
             }
 
-            RateEntity rate = new RateEntity("Мегафон", "https://volgograd.megafon.ru/tariffs/all/", name, price, 0, minutes, gb);
+            RateEntity rate = new RateEntity("Мегафон", url, name, price, 0, minutes, gb);
+            rateDAO.create(rate);
+        }
+    }
+
+    @Transactional
+    public void parseTele2Rates() {
+        String url = "https://volgograd.tele2.ru/tariffs";
+
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(url).get();
+        } catch (IOException e) {
+            System.out.println("Не получилось подключиться к сайту tele2!");
+            throw new RuntimeException(e);
+        }
+        Elements tariffElements = doc.select(".tariff-card.tariff-card_inline");
+
+        for (Element tariffElement : tariffElements){
+            String name = tariffElement.select(".tariff-card__title-link").text();
+            if (name.contains("Интернет") || name.isBlank()){
+                continue;
+            }
+            String[] rateDetails = tariffElement.select(".tariff-card-parameter__value").text().split(" ");
+            String priceStr = tariffElement.select(".tariff-abonent-fee__current-price-value").text();
+            if (priceStr.isBlank()){
+                continue;
+            }
+            int price = Integer.parseInt(priceStr);
+
+            int minutes = Integer.parseInt(rateDetails[0]);
+            int gb = Integer.parseInt(rateDetails[1]);
+            int sms = 0;
+            if (rateDetails.length == 4){
+                sms = Integer.parseInt(rateDetails[3]);
+            }
+            if (rateDetails.length == 3 && !rateDetails[2].contains("+")) {
+                sms = Integer.parseInt(rateDetails[2]);
+            }
+            RateEntity rate = new RateEntity("Tele2", url, name, price, sms, minutes, gb);
             rateDAO.create(rate);
         }
     }
