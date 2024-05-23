@@ -14,4 +14,6 @@ public interface RateDAOInterface {
     void update(RateEntity rate);
 
     void delete(Long id);
+
+    List<RateEntity> getFilteredRates(Integer priceFrom, Integer priceTo, Integer gbFrom, Integer gbTo, Integer minutesFrom, Integer minutesTo, Integer messagesFrom, Integer messagesTo);
 }

@@ -11,6 +11,7 @@ import ru.kozarez.websiteoperatorrates.dao.RateDAOInterface;
 import ru.kozarez.websiteoperatorrates.entities.RateEntity;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -99,5 +100,15 @@ public class RateService {
             return Integer.parseInt(matcher.group());
         }
         throw new IllegalArgumentException("Цена не найдена в строке: " + priceStr);
+    }
+
+    @Transactional
+    public List<RateEntity> getRates() {
+        return rateDAO.getAll();
+    }
+
+    @Transactional
+    public List<RateEntity> getFilteredRates(Integer priceFrom, Integer priceTo, Integer gbFrom, Integer gbTo, Integer minutesFrom, Integer minutesTo, Integer messagesFrom, Integer messagesTo) {
+        return rateDAO.getFilteredRates(priceFrom, priceTo, gbFrom, gbTo, minutesFrom, minutesTo, messagesFrom, messagesTo);
     }
 }
