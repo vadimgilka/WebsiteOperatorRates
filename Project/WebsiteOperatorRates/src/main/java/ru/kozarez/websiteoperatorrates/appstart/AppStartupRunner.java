@@ -13,5 +13,8 @@ public class AppStartupRunner implements CommandLineRunner {
     public void run(String... args) {
         rateService.parseTele2Rates();
         rateService.parseMegafonRates();
+        rateService.parseBeelineRates();
+        rateService.parseRostelekomRates();
+        rateService.parseTinkoffRates();
     }
 }

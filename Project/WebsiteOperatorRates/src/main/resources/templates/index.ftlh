@@ -10,7 +10,7 @@
 <body>
 <header class="header-section text-center">
     <div class="overlay">
-        <h1 class="header-text">Выберите свой тариф!</h1>
+        <h1 class="header-text"><a href="/">Выберите свой тариф!</a></h1>
     </div>
 </header>
 <main class="container mt-4">
@@ -69,9 +69,9 @@
             <tr>
                 <td>${rate.providerName}</td>
                 <td><a href="${rate.link}" target="_blank">${rate.name}</a></td>
-                <td>${rate.gigabytesOfInternet} ГБ</td>
-                <td>${rate.minutesOfCall}</td>
-                <td>${rate.messages}</td>
+                <td><#if rate.gigabytesOfInternet == 111111>Безлимит<#else>${rate.gigabytesOfInternet} ГБ</#if></td>
+                <td><#if rate.minutesOfCall == 111111>Безлимит<#else>${rate.minutesOfCall}</#if></td>
+                <td><#if rate.messages == 111111>Безлимит<#else>${rate.messages}</#if></td>
                 <td>${rate.price} р/мес</td>
             </tr>
         </#list>

@@ -83,4 +83,10 @@ public class RateDAOImplementation implements RateDAOInterface {
         query.where(cb.and(predicates.toArray(new Predicate[0])));
         return entityManager.createQuery(query).getResultList();
     }
+
+    public void deleteByProviderName(String providerName) {
+        entityManager.createQuery("DELETE FROM RateEntity r WHERE r.providerName = :providerName")
+                .setParameter("providerName", providerName)
+                .executeUpdate();
+    }
 }
